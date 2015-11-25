@@ -1,0 +1,44 @@
+#include "list.h"
+
+elem_t * elem_new()
+{
+	elem_t newe = malloc(sizeof(*newe));
+	if(newe)
+	{
+		newe->data = NULL;
+		newe->next = NULL;
+	}
+
+	return newe;
+}
+
+elem_t * elem_new_init(void * data)
+{
+	elem_t * newe = elem_new();
+	if(newe)
+		newe->data = data;
+
+	return newe;
+}
+
+list_t * list_new()
+{
+	list_t * newl = malloc(sizeof(*newl));
+
+	if(newl)
+	{
+		newl->size = 0;
+		newl->head = newl->tail = NULL;
+	}
+
+	return newl;
+}
+
+void list_init(list_t * list, int n_elem)
+{
+	if(n_elem > 0)
+	{
+		list->head = 
+	}
+}
+

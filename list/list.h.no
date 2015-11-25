@@ -1,0 +1,178 @@
+/*!
+ *
+ */
+
+#ifndef LIST_H
+#  define LIST_H
+
+#  include <stdlib.h>
+
+/*!
+ *
+ * \struct elem_t
+ * \brief Représente un élément de liste
+ *
+ * Cette structure représente un élément de liste.
+ */
+typedef struct elem_t elem_t;
+struct elem_t {
+	void * data;	//!< Contient la donnée de l'élément.
+
+	elem_t * next;	//!< Contient l'adresse de l'élément suivant.
+}; 
+
+/*!
+ *
+ * \struct list_t
+ * \brief Représente une liste chainée.
+ *
+ * Représente une liste simplement chainée contenant le début et la fin.
+ */
+typedef struct list_t list_t;
+struct list_t {
+	elem_t *	head,	//!< Adresse du permier élément.
+				tail;	//!< Adresse du dernier élément.
+	size_t		size;	//!< Taille de la liste.
+} list_t;
+
+
+/*!
+ * \brief Crée une nouvelle liste.
+ * \return La liste fraichement allouée.
+ * 
+ * Alloue de la mémoire pour une liste à 0 élément.
+ */
+list_t *	list_new();
+
+/*!
+ * \brief Initialise une liste.
+ * \param list Liste à initialiser.
+ * \param n_elem Nombre d'élément à allouer.
+ *
+ * Initialise la liste `list` en allouant `n_elem` éléments.
+ * Met également à jour la taille de la liste.
+ *
+ * \todo return
+ */
+void		list_init(list_t * list, int n_elem);
+
+/*!
+ * \brief Crée une nouvelle liste puis l'initialise.
+ * \param n_elem Nombre d'éléments à allouer.
+ * 
+ * \see list_new()
+ * \see list_init()
+ */
+list_t *	list_new_init(int n_elem);
+
+/*!
+ * \brief Détruit une liste.
+ * \param list Liste à détruire.
+ *
+ * Détruit tous les éléments de la liste `list`, puis la liste elle-même.
+ * ATTENTION : Ne prend pas en charge la désallocation des données de chaque élément !
+ */
+void		list_delete(list_t * list);
+
+
+/*!
+ * \brief Ajoute un élément en début de liste.
+ * \param list Liste à étendre.
+ * \param data Donnée à mettre dans le nouvel élément.
+ *
+ * Ajoute un élément en début de liste en allouant un nouvel élément dans lequel on place `data`.
+ *
+ * \todo return
+ */
+int			list_prepend(list_t * list, void * data);
+
+/*!
+ * \brief Ajoute un élément en fin de liste.
+ * \param list Liste à étendre.
+ * \param data Donnée à mettre dans le nouvel élément.
+ * 
+ * Même chose que list_prepend(), mais en début de liste.
+ *
+ * \todo return
+ */
+int			list_append(list_t * list, void * data);
+
+
+/*!
+ * \brief Supprime le premier élément de la liste.
+ * \param list Liste à réduire.
+ * 
+ * ATTENTION : Ne prend pas en charge la désallocation de la donnée dans l'élément !
+ *
+ * \return Donnée de l'élément retiré.
+ */
+void *		list_pop_front(list_t * list);
+
+/*!
+ * \brief Supprime le dernier élément de la liste.
+ * \param list Liste à réduire.
+ *
+ * ATTENTION : Ne prend pas en charge la désallocation de la donnée dans l'élément !
+ *
+ * \return Donnée de l'élément retiré.
+ */
+void *		list_pop_back(list_t * list);
+
+/*!
+ * \brief Supprime de la liste l'élément à l'indice donné.
+ * \param list Liste à réduire.
+ * \param index Indice où l'élément doit être supprimé.
+ *
+ * ATTENTION : Ne prend pas en charge la désallocation de la donnée dans l'élément !
+ *
+ * \return Donnée de l'élément retiré.
+ */
+void *		list_pop(list_t * list, int index);
+
+
+/*!
+ * \brief Insère un élément dans la liste supposée ordonnée.
+ * \param list Liste à étendre.
+ * \param data Donnée de l'élément à insérer.
+ * \param compare Fonction de comparaison entre deux données.
+ *
+ * Insère un élément en supposant que `list` est ordonnée.
+ * Utilise la fonction `compare` pour comparer la donnée `data` à ajouter avec la donnée de chaque
+ * élément afin de choisir l'emplacement approprié pour insérer la donnée `data`.
+ *
+ * Le comportement attendu de la fonction `compare` doit être semblable à strcmp() :
+ *  - renvoyer 0 si les deux valeurs sont égales. Sinon, si la première valeur est plus grande,
+ *  renvoyer 1. Sinon renvoyer -1.
+ *  - prendre deux arguments : les deux valeurs à comparer.
+ *
+ * \todo return
+ */
+int			list_insert(list_t * list, void * data, int (*compare)(void *, void *));
+
+/*!
+ * \brief Insère dans la liste un élément à l'indice donné.
+ * \param index Indice où l'élément doit être inséré.
+ * \param data Donnée de l'élément à insérer.
+ *
+ * \todo return
+ */
+int			list_insert(int index, void * data);
+
+
+/*!
+ * \brief Applique une fonction à tous les éléments.
+ * \param list Liste à traiter.
+ * \param apply Fonction à appliquer.
+ *
+ * Applique la fonction `apply` à chaque donnée des éléments de la liste `list`.
+ *
+ * Le comportement attendu de `apply` est de :
+ *  - renvoyer 0 si le traitement sur la donnée de l'élément courant exige un arrêt de la fonction.
+ *  - prend deux paramètres : `data`, la donnée à traiter, et `arg`, un argument quelconque.
+ *
+ * \return La liste modifiée. Renvoie NULL si une erreur est détectée.
+ */
+list_t *	list_map(list_t * list, int (*apply)(void * data, void * arg));
+
+#endif
+
