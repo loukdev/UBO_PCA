@@ -65,7 +65,7 @@ blist_pop_front(blist_t * list)
 	}
 
 	blist_t * next = list->next;	// On récupère l'élément à supprimer.
-	void * data = next->data;		// On récupère la donnée de cet élément.
+	void * data = list->data;		// On récupère la donnée du 1er élément.
 
 	list->next = next->next;		// On délie le 2e élément en liant le 1er avec le 3e.
 	list->data = next->data;		// On copie l'adresse de la donnée du 2e élément dans le 1er élément.
@@ -89,7 +89,7 @@ blist_pop_back(blist_t * list)
 	if(blast)					// On délie le dernier élément s'il y en a un.
 		blast->next = NULL;
 
-	void * data = list->data;	// On récupère la donnée du dernier élément, qui est ensuite supprimé.
+	void * data = list->data;	// On récupère la donnée du dernier élément, cet élément est ensuite supprimé.
 	free(list);
 
 	return data;				// On renvoie la donnée de l'élément supprimé.
