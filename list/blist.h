@@ -27,7 +27,7 @@
 /*
  * \brief Renvoie le pointeur casté de `ptr`.
  *
- * Caste le pointeur `ptr` en pointeur sur `type` :
+ * Renvoie l'attribut `data` après un cast de `ptr` en pointeur sur `type` :
  * ((type *) ptr)
  */
 #  define REF_DATA(type, ptr)	((type *) (ptr)->data)
@@ -54,7 +54,7 @@
  * Récupère l'adresse de `val` puis la caste en pointeur générique :
  * ((void *) &(val))
  */
-#  define TO_REF(val)				((void *) &(val))
+#  define TO_REF(val)			((void *) &(val))
 
 
 /*!
@@ -75,7 +75,7 @@ struct blist_t {
 /*!
  * \brief "Crée" une nouvelle liste.
  * 
- , ou NULL.
+ * Renvoie NULL.
  *
  * \return NULL
  * \see blist_prepend()
